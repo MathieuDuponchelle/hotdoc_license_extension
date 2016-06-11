@@ -173,6 +173,7 @@ class LicenseExtension(BaseExtension):
             template = formatter.engine.get_template('license.html')
             formatted = template.render({'license': license})
             page.output_attrs['html']['extra_footer_html'].insert(0, formatted)
+            Formatter.extra_assets.add(license.plain_text_path)
 
     def setup(self):
         Formatter.formatting_page_signal.connect(self.__formatting_page_cb)
