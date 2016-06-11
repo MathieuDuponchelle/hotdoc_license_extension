@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 with open(os.path.join('hotdoc_license_extension', 'VERSION.txt'), 'r') as _:
     VERSION = _.read().strip()
 
-DIST_FILES = ['VERSION.txt']
+DIST_FILES = ['VERSION.txt', 'html_templates/*.html', 'data/*.txt', 'data/*.png']
 
 setup(
     name = "hotdoc_license_extension",
