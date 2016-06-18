@@ -1,4 +1,4 @@
-@require(license)
+@require(license, logo_path)
 
 <hr/>
 
@@ -11,9 +11,9 @@
 				license, unless otherwise noted.</em>
 			</td>
 			<td>
-			@if license.logo_path:
+			@if logo_path:
 			<a rel="license" href="@license.url">
-				<img src="@license.logo_path" class="license-logo"></img>
+				<img src="@logo_path" class="license-logo"></img>
 			</a>
 			@end
 			</td>	

@@ -123,6 +123,7 @@ class LicenseExtension(BaseExtension):
 
     def __init__(self, doc_repo):
         BaseExtension.__init__(self, doc_repo)
+        self.__installed_assets = set()
 
     def __license_for_page(self, page):
         if 'license' in page.meta:
@@ -171,12 +172,29 @@ class LicenseExtension(BaseExtension):
         license = self.__license_for_page(page)
         if license:
             template = formatter.engine.get_template('license.html')
-            formatted = template.render({'license': license})
+            if license.logo_path:
+                logo_path = os.path.join('assets', os.path.basename(license.logo_path))
+            else:
+                logo_path = None
+
+            formatted = template.render({'license': license, 'logo_path': logo_path})
             page.output_attrs['html']['extra_footer_html'].insert(0, formatted)
-            Formatter.extra_assets.add(license.plain_text_path)
+
+            self.__installed_assets.add(license.plain_text_path)
+            if license.logo_path:
+                self.__installed_assets.add(license.logo_path)
+
+    def __get_extra_files_cb(self, formatter):
+        res = []
+        for asset in self.__installed_assets:
+            src = asset
+            dest = os.path.basename(src)
+            res.append((src, dest))
+        return res
 
     def setup(self):
         Formatter.formatting_page_signal.connect(self.__formatting_page_cb)
+        Formatter.get_extra_files_signal.connect(self.__get_extra_files_cb)
 
         for ext in self.doc_repo.extensions.values():
             formatter = ext.formatters.get('html')
