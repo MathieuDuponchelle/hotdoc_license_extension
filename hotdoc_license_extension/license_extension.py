@@ -145,7 +145,7 @@ class LicenseExtension(BaseExtension):
             authors.append(Author(data.get('name'),
                                   data.get('email'),
                                   data.get('years'),
-                                  data.get('has-copyright' or True)))
+                                  data.get('has-copyright', True)))
         return authors
 
     def __extra_copyrights_for_page(self, page):
