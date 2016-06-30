@@ -5,8 +5,6 @@
 	<p>
 		@if copyright.has_copyright:
 		© \
-		@end
-		\
 		@if copyright.years:
 		\
 		@for year in copyright.years:
@@ -14,6 +12,11 @@
 		@end
 		\
 		@end
+		\
+		@else:
+		Authored by
+		@end
+		\
 	       	@copyright.name \
 		@if copyright.email:
 		(<a href="mailto:@copyright.email">@copyright.email</a>)

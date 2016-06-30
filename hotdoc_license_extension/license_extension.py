@@ -120,6 +120,7 @@ class LicenseExtension(BaseExtension):
     argument_prefix = 'license'
     default_license = None
     default_copyright_holders = []
+    authors_hold_copyright = True
 
     def __init__(self, doc_repo):
         BaseExtension.__init__(self, doc_repo)
@@ -145,7 +146,8 @@ class LicenseExtension(BaseExtension):
             authors.append(Author(data.get('name'),
                                   data.get('email'),
                                   data.get('years'),
-                                  data.get('has-copyright', True)))
+                                  data.get('has-copyright',
+                                      LicenseExtension.authors_hold_copyright)))
         return authors
 
     def __extra_copyrights_for_page(self, page):
@@ -208,6 +210,10 @@ class LicenseExtension(BaseExtension):
         group.add_argument("--default-license",
             help="Default license",
             dest="default_license", action='store', default=None)
+        group.add_argument("--authors-hold-copyright",
+            help="Whether authors hold a copyright by default."
+                 "This can be overriden on a per-page basis",
+            dest="authors_hold_copyright", action='store')
 
     @staticmethod
     def parse_config(doc_repo, config):
@@ -227,6 +233,8 @@ class LicenseExtension(BaseExtension):
             for _ in data:
                 LicenseExtension.default_copyright_holders.append(
                     _copyright_holder_from_data(_))
+        LicenseExtension.authors_hold_copyright = config.get(
+            "authors_hold_copyright", True)
 
 
 def get_extension_classes():
